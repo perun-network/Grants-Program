@@ -9,17 +9,17 @@
 ### Overview
 
 **Background.** Perun state channel technology enables fast and cheap transactions with arbitrary transaction logic on and across blockchains.
-The technology is based on peer-reviewed research that has been published at top conferences and is being implemented in the form of the open-source library go-perun written in Go.
+The technology is based on peer-reviewed research that has been published at top conferences and is being implemented in the form of the open-source library _go-perun_ written in Go.
 One of its main features is its blockchain-agnostic design, which means that most parts of the library do not depend on a concrete blockchain implementation, but are rather implemented against abstract blockchain backend components. Currently the library comes with an Ethereum backend.
 
-**Proposal.** We provide a Polkadot backend for the go-perun library in the form of a Substrate Pallet and a corresponding client integration, thereby enabling Polkadot Blockchains to benefit from the Perun channel technology.
+**Proposal.** We provide a Polkadot backend for the _go-perun_ library in the form of a Substrate Pallet and a corresponding client integration, thereby enabling Polkadot Blockchains to benefit from the Perun channel technology.
 We view this as the first step towards enabling the full power of Perun channel technology.
 In the future, we envision to provide cross-chain functionality for establishing channels between two Polkadot chains, and potentially in the further future even between a Polkadot chain and a non-Polkadot chain, such as Ethereum. We propose to release this work open-source under the Apache 2.0 license.
 
 
 ### Project Details
 
-The go-perun library is written in Go. At the core, it consists of a set of go packages whose relationships are visualized in the architecture diagram below and we will explain in the following. The library design follows the dependency inversion principle which means that many of the packages are defined as abstract interfaces that can be implemented depending on the given application context. This allows us to swap out the blockchain backend implementation of Ethereum for a backend implementation of Polkadot, or the communication layer from one that uses a simple TCP/IP dialer to one which is based on `libp2p` without having to change any of the other components.
+The _go-perun_ library is written in Go. At the core, it consists of a set of go packages whose relationships are visualized in the architecture diagram below and we will explain in the following. The library design follows the dependency inversion principle which means that many of the packages are defined as abstract interfaces that can be implemented depending on the given application context. This allows us to swap out the blockchain backend implementation of Ethereum for a backend implementation of Polkadot, or the communication layer from one that uses a simple TCP/IP dialer to one which is based on `libp2p` without having to change any of the other components.
 
 In the following we give an overview of main packages and their functionality.
 At the core of the library lies the `client` package, which represents a channel client and holds the core protocol logic. For communication with other clients, the client package uses the `wire` package, which is an abstract definition of the communication layer that is to be instantiated with a concrete implementation suitable for the given application context.
@@ -28,8 +28,8 @@ Besides that, the library contains the `persistence` package and the `log` packa
 
 ![go-perun Architecture](https://perun.network/static/perun-arch_polkadot.png)
 
-In essence, implementing a Polkadot backend for go-perun means implementing the `wallet` and `channel` abstractions for Polkadot.
-On the one hand, this involves implementing off-chain functionality in Go as part of the core go-perun library. On the other hand, it also involves implementing on-chain functionality in Rust as part of a Polkadot Substrate Pallet.
+In essence, implementing a Polkadot backend for _go-perun_ means implementing the `wallet` and `channel` abstractions for Polkadot.
+On the one hand, this involves implementing off-chain functionality in Go as part of the core _go-perun_ library. On the other hand, it also involves implementing on-chain functionality in Rust as part of a Polkadot Substrate Pallet.
 For communication between the off-chain and on-chain components we intend to use the Go Substrate RPC client.
 
 In the following we give more detail on the individual components of this project.
@@ -47,13 +47,13 @@ This involves implementing encoding and decoding of channel states off-chain and
 
 **Where and how does your project fit into the ecosystem?**
 
-**Peer-to-peer microtransactions.** Polkadot scales better than previous generation blockchains like Bitcoin or Ethereum, but there are limits to the scalability of Polkadot. For example, realizing pay-per-use applications may require the network to handle thousands of transactions per second. Moreover, in certain use cases (e.g., microtransactions) finality has to be instantaneous. This is where channel technology comes into play. With state channels, transactions can be offloaded from the network and performed peer-to-peer. Due to the support for generalized channels, go-perun also offers the ability to realize arbitrary logic within a channel. For example, this can be used to build a real-time game with financial incentives, where based on the rules of the game and the game state, transactions between the players are performed.
+**Peer-to-peer microtransactions.** Polkadot scales better than previous generation blockchains like Bitcoin or Ethereum, but there are limits to the scalability of Polkadot. For example, realizing pay-per-use applications may require the network to handle thousands of transactions per second. Moreover, in certain use cases (e.g., microtransactions) finality has to be instantaneous. This is where channel technology comes into play. With state channels, transactions can be offloaded from the network and performed peer-to-peer. Due to the support for generalized channels, _go-perun_ also offers the ability to realize arbitrary logic within a channel. For example, this can be used to build a real-time game with financial incentives, where based on the rules of the game and the game state, transactions between the players are performed.
 
 **Fast and cheap cross-chain transactions.** Polkadot has already built in support for cross-chain transactions within the Polkadot network. However, these have to be routed over the relay chain, which may take some time and involve some transaction fee. Perun virtual channels enable a shortcut for sending transactions across networks. The idea is that if funds can be preallocated at liquidity pools in the respective networks, then users can deposit into the liquidity pool on one network, and withdraw from the liquidity pool on the other network. The channel technology provides the basis for this to happen conveniently and securely for all involved parties.
 
-**Modularity.** The architecture of go-perun makes extensive use of dependency inversion to allow for maximal modularity and useability in existing projects. For example, this allows for injecting the off-chain communication layer, the logging component, and the persistence component depending on the application context.
+**Modularity.** The architecture of _go-perun_ makes extensive use of dependency inversion to allow for maximal modularity and useability in existing projects. For example, this allows for injecting the off-chain communication layer, the logging component, and the persistence component depending on the application context.
 
-**Synergies.** Thanks to the blockchain-agnostic design, projects using go-perun can benefit from synergy effects in the go-perun ecosystem. When new blockchain backends are added to the framework, it becomes rather easy to also extend such projects to these new blockchains. For example, Bosch Research is developing a [dedicated state channels node](https://github.com/hyperledger-labs/perun-node/) that uses go-perun. Once a Polkadot backend exists, this node can be extended to also support Polkadot. As such, investing in a new blockchain backend for go-perun also has the potential for secondary beneficial effects on the Polkadot ecosystem.
+**Synergies.** Thanks to the blockchain-agnostic design, projects using _go-perun_ can benefit from synergy effects in the _go-perun_ ecosystem. When new blockchain backends are added to the framework, it becomes rather easy to also extend such projects to these new blockchains. For example, Bosch Research is developing a [dedicated state channels node](https://github.com/hyperledger-labs/perun-node/) that uses _go-perun_. Once a Polkadot backend exists, this node can be extended to also support Polkadot. As such, investing in a new blockchain backend for _go-perun_ also has the potential for secondary beneficial effects on the Polkadot ecosystem.
 
 **Who is your target audience?**
 **What need(s) does your project meet?**
@@ -69,7 +69,7 @@ We target the following user groups:
 We are aware of *cChannel-substrate*, which is a channel project on Polkadot by Celer. We differentiate ourselves from cChannel-substrate as follows:
 
 1) *cChannel-substrate*: does not include a client implementation.
-This means that the whole off-chain protocol implementation is still to be done on their side. *go-perun*: Thanks to the unique blockchain-agnostic design of go-perun, go-perun features an abstract implementation of the off-chain protocols and only the blockchain-specific parts of the client need to be implemented.
+This means that the whole off-chain protocol implementation is still to be done on their side. *go-perun*: Thanks to the unique blockchain-agnostic design of _go-perun_, _go-perun_ features an abstract implementation of the off-chain protocols and only the blockchain-specific parts of the client need to be implemented.
 2) *cChannel-substrate*: focuses on payment channels.
 *go-perun*: provides generalized state channel functionality.
 3) *cChannel-substrate*: does not allow transactions across chains.
@@ -85,12 +85,13 @@ PolyCrypt is a Spin-Off from the Technical University of Darmstadt, resulting fr
 The PolyCrypt/Perun team consists of leading academic researchers in the off-chain space and experienced software developers of blockchain and cryptographic software. The team members include:
 
 * **Prof. Sebastian Faust** _(Co-founder, research lead)_ is a full professor at the Computer Science department of Technical University of Darmstadt, where he leads the applied cryptography and blockchain lab. He has published more than 60 academic papers in cryptography and blockchain technologies at leading venues for research in IT Security and Cryptography. He frequently serves in program committees of prestigious conferences including Eurocrypt, IEEE S&P and NDSS. For his work he received multiple awards including the Eurocrypt’14 best paper award and the DFG/FNP Copernicus prize 2020. His main scientific contributions to the blockchain space are the co-invention of the concept of Proofs of Space (on which the cryptocurrency Chia is based), the first formal analysis of BIP32 wallets, and extensive work on off-chain protocols. The latter includes the development of the Perun off-chain protocols published in a series of works at IEEE S&P, Eurocrypt and ACM CCS. These publications form the mathematical foundations for the Perun software development project that is currently funded by a BMBF grant for founding high-tech companies in the IT Security space. Sebastian Faust leads research at PolyCrypt and the protocols used in _go-perun_ are based on his work.
-* **Sebastian Stammler** _(Co-founder, Co-CEO, technical lead)_ is the technical lead at PolyCrypt. He has studied mathematics at TU Darmstadt and the University of Cambridge and has subsequently worked as a mathematician in quantitative finance at Ernst & Young in Frankfurt, Germany. He then joined a software development startup for one year, finally starting a PhD in computer science at TU Darmstadt in the field of secure multi-party computation, which he is about to complete. While at TU Darmstadt, he joined the Perun team in 2019 to lead the initial development of the `go-perun` framework, which then saw its first release in December 2019.
-* **Dr. Matthias Geihs** _(software architect, researcher)_ currently leads the development of the go-perun library. He holds a PhD in Computer Science from TU Darmstadt and previously worked as an IT Security Specialist at Deutsche Börse Group.
-* **Hendrik Amler** _(Co-founder, Co-CEO, team management)_
-* **Steffen Rattay** _(Developer)_
-* **Oliver Tale-Yazdi** _(Developer)_
-* **Norbert Dzikowski** _(Developer)_
+* **Sebastian Stammler** _(Co-founder, Co-CEO, technical lead, @sebastianst)_ is the technical lead at PolyCrypt. He has studied mathematics at TU Darmstadt and the University of Cambridge and has subsequently worked as a mathematician in quantitative finance at Ernst & Young in Frankfurt, Germany. He then joined a software development startup for one year, finally starting a PhD in computer science at TU Darmstadt in the field of secure multi-party computation, which he is about to complete. While at TU Darmstadt, he joined the Perun team in 2019 to lead the initial development of the `go-perun` framework, which then saw its first release in December 2019.
+* **Dr. Matthias Geihs** _(software architect, researcher, @matthiasgeihs)_ currently leads the development of the _go-perun_ library. He holds a PhD in Computer Science from TU Darmstadt and previously worked as an IT Security Specialist at Deutsche Börse Group.
+* **Hendrik Amler** _(Co-founder, Co-CEO, team management, @tinnendo)_
+* **Steffen Rattay** _(Developer, @RmbRT)_
+* **Oliver Tale-Yazdi** _(Developer, @ggwpez)_
+* **Norbert Dzikowski** _(Developer, @ndzik)_
+* **Philipp Lehwalder** _(Developer, @cryptphil)_
 * **Sasan Safai** _(Co-founder, business development)_
 * **Prof. Stefan Dziembowski** _(Co-inventor of Perun, Head of Cryptography Research Group at University of Warsaw)_
 
@@ -104,18 +105,18 @@ The PolyCrypt/Perun team consists of leading academic researchers in the off-cha
 ### Legal Structure
 
 * **Registered Address:** PolyCrypt GmbH, c/o TU Darmstadt, Hochschulstraße 1, 64289 Darmstadt, Germany
-* **Registered Legal Entity:** PolyCrypt GmbH
+* **Registered Legal Entity:** PolyCrypt GmbH, Handelsregister Darmstadt HRB 101219, VAT DE339864467
 
 ### Team's experience
 
 Our team has extensive experience in applied cryptography and blockchain research as well as in software development. Our team members include the leading researchers on the Perun state channel research papers, which have been published at renowned conferences.
-Furthermore, our team includes experienced developers. Our team members are the main developers of the go-perun library and therefore provide over 2 years of experience specifically in developing software in the blockchain space.
+Furthermore, our team includes experienced developers. Our team members are the main developers of the _go-perun_ library and therefore provide over 2 years of experience specifically in developing software in the blockchain space.
 
 ### Team Code Repos
 
 A collection of our repositories can be found at https://github.com/perun-network/.
 
-Since mid 2020, the Perun Framework is a Hyperledger Labs project. The go-perun library is available at https://github.com/hyperledger-labs/go-perun and the Ethereum smart contracts are available at https://github.com/hyperledger-labs/perun-eth-contracts.
+Since mid 2020, the Perun Framework is a Hyperledger Labs project. The _go-perun_ library is available at https://github.com/hyperledger-labs/go-perun and the Ethereum smart contracts are available at https://github.com/hyperledger-labs/perun-eth-contracts.
 
 ### Team LinkedIn Profiles
 
@@ -128,7 +129,7 @@ The foundation for Perun State Channels was laid in “Perun: Virtual Payment Hu
 An overview and summary of the research results is given in our white paper at https://perun.network/pdf/Perun2.0.pdf.
 
 **Software:** 
-The main repository of the go-perun library is at https://github.com/hyperledger-labs/go-perun.
+The main repository of the _go-perun_ library is at https://github.com/hyperledger-labs/go-perun.
 It currently features an Ethereum blockchain backend and supports generalized state channels on a single backend.
 In 2020, we joined the hyperledger foundation together with our industry partner BOSCH, with the goal of growing an open-source community around the Perun project.
 
@@ -142,7 +143,7 @@ In 2020, we joined the hyperledger foundation together with our industry partner
 
 We propose to split our project into two phases.
 Phase 1 is in the focus of this application and provides the Polkadot on-chain functionality.
-Phase 2 will provide the Polkadot off-chain functionality in go-perun and is subject to approval after successful completion of the first phase.
+Phase 2 will provide the Polkadot off-chain functionality in _go-perun_ and is subject to approval after successful completion of the first phase.
 Optionally, we may extend the current application to cover both phases.
 
 ### Milestone 1 — Substrate Pallet (Phase 1)
@@ -169,7 +170,7 @@ Optionally, we may extend the current application to cover both phases.
 | Number | Deliverable | Specification |
 | -----: | ----------- | ------------- |
 | 0a. | License | Apache 2.0 |
-| 0b. | Documentation | We will provide inline documentation of the code and a basic tutorial that explains how a user can use the go-perun library with the Polkadot backend. |
+| 0b. | Documentation | We will provide inline documentation of the code and a basic tutorial that explains how a user can use the _go-perun_ library with the Polkadot backend. |
 | 0c. | Testing Guide | Core functions will be fully covered by unit tests to ensure functionality and robustness. In the guide, we will describe how to run these tests. |
 | 0d. | Article/Tutorial | We will publish an article/tutorial/workshop that explains what was achieved as part of the grant.
 | 1. | Go package: Wallet | We will create a Go package that implements the wallet package abstraction for Polkadot. |
