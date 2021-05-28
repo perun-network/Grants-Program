@@ -26,7 +26,7 @@ At the core of the library lies the `client` package, which represents a channel
 Furthermore, the client package interfaces with the `wallet` package and the `channel` package. The `wallet` package and the `channel` package lie at the core of any blockchain backend implementation. The `wallet` package provides functionality for account management and signature generation. The `channel` package provides the core data structures and functionality for interacting with the blockchain.
 Besides that, the library contains the `persistence` package and the `log` package, which are abstractions for persistence and logging functionality whose implementations can be injected depending on the application context.
 
-![](https://labs.hyperledger.org/perun-doc/_images/goperun_architecture.png)
+![go-perun Architecture](https://perun.network/static/perun-arch_polkadot.png)
 
 In essence, implementing a Polkadot backend for go-perun means implementing the `wallet` and `channel` abstractions for Polkadot.
 On the one hand, this involves implementing off-chain functionality in Go as part of the core go-perun library. On the other hand, it also involves implementing on-chain functionality in Rust as part of a Polkadot Substrate Pallet.
